@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AbaInvest – Portfolio Dashboard</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <div class="logo">
+          <span class="logo-name">ABAINVEST</span>
+        </div>
+        <nav class="nav">
+          <a href="#overview">Overview</a>
+          <a href="#portfolio">Holdings</a>
+          <a href="#performance">Performance</a>
+          <a href="#about">About</a>
+        </nav>
+      </header>
+
+      <main class="main">
+        <section id="overview" class="section hero">
+          <div class="hero-text">
+            <h1>AbaInvest Portfolio Dashboard</h1>
+            <p>
+              A focused view of my equity holdings, total portfolio value, and how
+              AbaInvest performs compared to the Oslo Stock Exchange.
+            </p>
+            <div class="hero-highlights">
+              <div class="metric-card">
+                <div class="metric-label">Total portfolio value</div>
+                <div id="total-value" class="metric-value">-</div>
+                <div id="total-change" class="metric-sub"></div>
+              </div>
+              <div class="metric-card">
+                <div class="metric-label">Vs. Oslo Børs (YTD)</div>
+                <div id="benchmark-diff" class="metric-value small">-</div>
+                <div class="metric-sub">Relative performance</div>
+              </div>
+            </div>
+          </div>
+          <div class="hero-card">
+            <h2>Performance vs. Oslo Børs</h2>
+            <canvas id="performance-chart" aria-label="Portfolio vs Oslo Børs chart"></canvas>
+          </div>
+        </section>
+
+        <section id="portfolio" class="section">
+          <div class="section-header">
+            <h2>Portfolio holdings</h2>
+            <p>
+              Current equity positions in the AbaInvest portfolio. Values and weights are based on
+              the latest prices in this view.
+            </p>
+          </div>
+          <div class="card table-card">
+            <div class="table-toolbar">
+              <div class="toolbar-group">
+                <span class="toolbar-label">Sort by:</span>
+                <button data-sort="value" class="sort-button active">Value</button>
+                <button data-sort="weight" class="sort-button">Weight</button>
+                <button data-sort="pl" class="sort-button">P/L</button>
+              </div>
+              <div class="toolbar-group">
+                <span class="toolbar-label">Currency:</span>
+                <span class="toolbar-pill">NOK</span>
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table class="holdings-table">
+                <thead>
+                  <tr>
+                    <th>Ticker</th>
+                    <th>Company</th>
+                    <th class="numeric">Shares</th>
+                    <th class="numeric">Price</th>
+                    <th class="numeric">Value</th>
+                    <th class="numeric">Weight</th>
+                    <th class="numeric">P/L</th>
+                  </tr>
+                </thead>
+                <tbody id="holdings-body">
+                  <!-- Filled by script.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="manage" class="section">
+          <div class="section-header">
+            <h2>Manage holdings</h2>
+            <p>
+              Add or remove positions directly from your browser. Changes are stored locally on this
+              device using browser storage.
+            </p>
+          </div>
+          <div class="card manage-grid">
+            <div class="manage-column">
+              <h3>Add holding</h3>
+              <form id="add-holding-form" class="form-grid">
+                <div class="field">
+                  <label for="ticker">Ticker</label>
+                  <input id="ticker" name="ticker" type="text" placeholder="EQNR" required />
+                </div>
+                <div class="field">
+                  <label for="company">Company</label>
+                  <input
+                    id="company"
+                    name="company"
+                    type="text"
+                    placeholder="Equinor ASA"
+                    required
+                  />
+                </div>
+                <div class="field">
+                  <label for="shares">Shares</label>
+                  <input
+                    id="shares"
+                    name="shares"
+                    type="number"
+                    min="1"
+                    step="1"
+                    placeholder="100"
+                    required
+                  />
+                </div>
+                <div class="field">
+                  <label for="price">Price (NOK)</label>
+                  <input
+                    id="price"
+                    name="price"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    placeholder="320.50"
+                    required
+                  />
+                </div>
+                <div class="field">
+                  <label for="costBasis">Cost basis (NOK)</label>
+                  <input
+                    id="costBasis"
+                    name="costBasis"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    placeholder="280.00"
+                    required
+                  />
+                </div>
+                <div class="button-row">
+                  <button type="submit" class="btn-primary">Add / update holding</button>
+                </div>
+              </form>
+            </div>
+            <div class="manage-column">
+              <h3>Remove holding</h3>
+              <form id="remove-holding-form" class="form-grid">
+                <div class="field">
+                  <label for="remove-ticker">Select ticker</label>
+                  <select id="remove-ticker" name="removeTicker">
+                    <option value="">Select ticker</option>
+                  </select>
+                </div>
+                <div class="button-row">
+                  <button type="submit" class="btn-secondary">Remove selected</button>
+                </div>
+                <p class="muted">
+                  Removing a holding here only affects this private dashboard and does not affect
+                  any real brokerage account.
+                </p>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <section id="performance" class="section split">
+          <div class="card">
+            <h2>Allocation snapshot</h2>
+            <p>
+              Distribution of capital across the individual holdings. This gives a quick feel for
+              concentration risk and where performance matters most.
+            </p>
+            <ul id="allocation-list" class="allocation-list">
+              <!-- Filled by script.js -->
+            </ul>
+          </div>
+          <div class="card">
+            <h2>Notes on performance</h2>
+            <p class="muted">
+              The chart compares the indexed development of the AbaInvest portfolio against an
+              Oslo Børs index proxy. Data in this version is static and illustrative.
+            </p>
+            <ul class="notes-list">
+              <li>Portfolio line shows cumulative return based on the holdings data defined in the script.</li>
+              <li>Benchmark line approximates the Oslo Børs over the same period.</li>
+              <li>
+                To connect live data later, you can replace the static arrays in
+                <code>script.js</code> with data from an API or spreadsheet export.
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="about" class="section">
+          <div class="card">
+            <h2>About AbaInvest</h2>
+            <p>
+              AbaInvest is a personal investment portfolio with a focus on long-term ownership in
+              quality companies listed on the Oslo Stock Exchange and selected international
+              markets. This dashboard is built to give a clear, calm overview of the portfolio
+              without the noise of intraday trading.
+            </p>
+            <p>
+              All figures and returns shown here are for personal tracking purposes only and do
+              not constitute investment advice.
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        <span>© <span id="year"></span> AbaInvest. All rights reserved.</span>
+        <span class="footer-note">Private portfolio overview.</span>
+      </footer>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
+
