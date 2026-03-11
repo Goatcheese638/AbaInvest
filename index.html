@@ -1,241 +1,187 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="no">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AbaInvest – Portfolio Dashboard</title>
+    <title>AbaInvest – Investeringsgruppe</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
-    <div class="page">
-      <header class="header">
-        <div class="logo">
-          <span class="logo-name">ABAINVEST</span>
-        </div>
-        <nav class="nav">
-          <a href="#overview">Overview</a>
-          <a href="#portfolio">Holdings</a>
-          <a href="#performance">Performance</a>
-          <a href="#about">About</a>
+    <header class="header" role="banner">
+      <div class="container header-inner">
+                        <a class="brand" href="#top" aria-label="AbaInvest – til toppen">
+          <img src="logo.png" alt="AbaInvest" class="brand-logo" />
+        </a>
+        <button class="nav-toggle" type="button" aria-controls="nav" aria-expanded="false">
+          <span class="sr-only">Åpne meny</span>
+          <span class="nav-toggle-lines" aria-hidden="true"></span>
+        </button>
+        <nav id="nav" class="nav" aria-label="Hovedmeny">
+          <a href="#om-oss">Om oss</a>
+          <a href="rapporter.html">Rapporter</a>
+          <a href="#kontakt">Kontakt</a>
         </nav>
-      </header>
+      </div>
+    </header>
 
-      <main class="main">
-        <section id="overview" class="section hero">
-          <div class="hero-text">
-            <h1>AbaInvest Portfolio Dashboard</h1>
-            <p>
-              A focused view of my equity holdings, total portfolio value, and how
-              AbaInvest performs compared to the Oslo Stock Exchange.
-            </p>
-            <div class="hero-highlights">
-              <div class="metric-card">
-                <div class="metric-label">Total portfolio value</div>
-                <div id="total-value" class="metric-value">-</div>
-                <div id="total-change" class="metric-sub"></div>
-              </div>
-              <div class="metric-card">
-                <div class="metric-label">Vs. Oslo Børs (YTD)</div>
-                <div id="benchmark-diff" class="metric-value small">-</div>
-                <div class="metric-sub">Relative performance</div>
-              </div>
-            </div>
+    <main id="top" class="main" role="main">
+      <section class="hero">
+        <div class="container">
+          <p class="eyebrow">Investeringsgruppe</p>
+          <h1 class="hero-title">AbaInvest</h1>
+          <p class="lead">
+            AbaInvest er en investeringsgruppe med fokus på analyse, disiplinert kapitalforvaltning
+            og langsiktig avkastning.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="rapporter.html">Se rapporter</a>
+            <a class="btn btn-ghost" href="#portefolje">Se porteføljeutvikling</a>
           </div>
-          <div class="hero-card">
-            <h2>Performance vs. Oslo Børs</h2>
-            <canvas id="performance-chart" aria-label="Portfolio vs Oslo Børs chart"></canvas>
-          </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="portfolio" class="section">
+      <section id="om-oss" class="section">
+        <div class="container">
           <div class="section-header">
-            <h2>Portfolio holdings</h2>
-            <p>
-              Current equity positions in the AbaInvest portfolio. Values and weights are based on
-              the latest prices in this view.
-            </p>
+            <h2>Om AbaInvest</h2>
+            <p class="muted">Kort fortalt hvem vi er og hvordan vi jobber.</p>
           </div>
-          <div class="card table-card">
-            <div class="table-toolbar">
-              <div class="toolbar-group">
-                <span class="toolbar-label">Sort by:</span>
-                <button data-sort="value" class="sort-button active">Value</button>
-                <button data-sort="weight" class="sort-button">Weight</button>
-                <button data-sort="pl" class="sort-button">P/L</button>
-              </div>
-              <div class="toolbar-group">
-                <span class="toolbar-label">Currency:</span>
-                <span class="toolbar-pill">NOK</span>
-              </div>
+          <div class="grid-2">
+            <div class="card">
+              <h3>Hva vi gjør</h3>
+              <ul class="list">
+                <li>Studentdrevet investeringsgruppe</li>
+                <li>Fokus på analyse og porteføljeforvaltning</li>
+                <li>Lærer investering gjennom praksis</li>
+              </ul>
             </div>
-            <div class="table-wrapper">
-              <table class="holdings-table">
-                <thead>
-                  <tr>
-                    <th>Ticker</th>
-                    <th>Company</th>
-                    <th class="numeric">Shares</th>
-                    <th class="numeric">Price</th>
-                    <th class="numeric">Value</th>
-                    <th class="numeric">Weight</th>
-                    <th class="numeric">P/L</th>
-                  </tr>
-                </thead>
-                <tbody id="holdings-body">
-                  <!-- Filled by script.js -->
-                </tbody>
-              </table>
+            <div class="card">
+              <h3>Investeringsfilosofi</h3>
+              <p class="muted">
+                Vi prioriterer kvalitet, tydelige hypoteser og risikostyring. Målet er å bygge en
+                robust portefølje over tid, med disiplin og transparens.
+              </p>
+              <p class="muted">
+                Tall og informasjon på nettsiden er ment som innsyn og dokumentasjon, ikke
+                investeringsråd.
+              </p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="manage" class="section">
+      <section id="portefolje" class="section">
+        <div class="container">
           <div class="section-header">
-            <h2>Manage holdings</h2>
-            <p>
-              Add or remove positions directly from your browser. Changes are stored locally on this
-              device using browser storage.
-            </p>
+            <h2>Porteføljeutvikling</h2>
+            <p class="muted">Indeksert til 100 ved oppstart – AbaInvest vs. Oslo Børs.</p>
           </div>
-          <div class="card manage-grid">
-            <div class="manage-column">
-              <h3>Add holding</h3>
-              <form id="add-holding-form" class="form-grid">
-                <div class="field">
-                  <label for="ticker">Ticker</label>
-                  <input id="ticker" name="ticker" type="text" placeholder="EQNR" required />
-                </div>
-                <div class="field">
-                  <label for="company">Company</label>
-                  <input
-                    id="company"
-                    name="company"
-                    type="text"
-                    placeholder="Equinor ASA"
-                    required
-                  />
-                </div>
-                <div class="field">
-                  <label for="shares">Shares</label>
-                  <input
-                    id="shares"
-                    name="shares"
-                    type="number"
-                    min="1"
-                    step="1"
-                    placeholder="100"
-                    required
-                  />
-                </div>
-                <div class="field">
-                  <label for="price">Price (NOK)</label>
-                  <input
-                    id="price"
-                    name="price"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    placeholder="320.50"
-                    required
-                  />
-                </div>
-                <div class="field">
-                  <label for="costBasis">Cost basis (NOK)</label>
-                  <input
-                    id="costBasis"
-                    name="costBasis"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    placeholder="280.00"
-                    required
-                  />
-                </div>
-                <div class="button-row">
-                  <button type="submit" class="btn-primary">Add / update holding</button>
-                </div>
-              </form>
+          <div class="card chart-card">
+            <div class="chart-wrap">
+              <canvas id="portfolio-chart" aria-label="Porteføljeutvikling"></canvas>
             </div>
-            <div class="manage-column">
-              <h3>Remove holding</h3>
-              <form id="remove-holding-form" class="form-grid">
-                <div class="field">
-                  <label for="remove-ticker">Select ticker</label>
-                  <select id="remove-ticker" name="removeTicker">
-                    <option value="">Select ticker</option>
-                  </select>
-                </div>
-                <div class="button-row">
-                  <button type="submit" class="btn-secondary">Remove selected</button>
-                </div>
-                <p class="muted">
-                  Removing a holding here only affects this private dashboard and does not affect
-                  any real brokerage account.
-                </p>
-              </form>
+            <div class="chart-meta">
+              <div class="metric">
+                <div class="metric-label">Total porteføljeverdi</div>
+                <div class="metric-value">NOK 156 400</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Avkastning siden start</div>
+                <div class="metric-value pl-positive">+32,0%</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">vs. Oslo Børs</div>
+                <div class="metric-value pl-positive">+17,5 pp</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Antall posisjoner</div>
+                <div class="metric-value">5</div>
+              </div>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section id="performance" class="section split">
-          <div class="card">
-            <h2>Allocation snapshot</h2>
-            <p>
-              Distribution of capital across the individual holdings. This gives a quick feel for
-              concentration risk and where performance matters most.
-            </p>
-            <ul id="allocation-list" class="allocation-list">
-              <!-- Filled by script.js -->
-            </ul>
+      <section id="beholdninger" class="section">
+        <div class="container">
+          <div class="section-header">
+            <h2>Beholdninger</h2>
+            <p class="muted">Nåværende posisjoner i porteføljen.</p>
           </div>
-          <div class="card">
-            <h2>Notes on performance</h2>
-            <p class="muted">
-              The chart compares the indexed development of the AbaInvest portfolio against an
-              Oslo Børs index proxy. Data in this version is static and illustrative.
-            </p>
-            <ul class="notes-list">
-              <li>Portfolio line shows cumulative return based on the holdings data defined in the script.</li>
-              <li>Benchmark line approximates the Oslo Børs over the same period.</li>
-              <li>
-                To connect live data later, you can replace the static arrays in
-                <code>script.js</code> with data from an API or spreadsheet export.
-              </li>
-            </ul>
+          <div class="card" style="padding: 0; overflow: hidden;">
+            <table class="holdings-table">
+              <thead>
+                <tr>
+                  <th>Ticker</th>
+                  <th>Selskap</th>
+                  <th class="numeric">Andel</th>
+                  <th class="numeric">Verdi (NOK)</th>
+                  <th class="numeric">Avkastning</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="ticker">EQNR</span></td>
+                  <td>Equinor ASA</td>
+                  <td class="numeric"><span class="weight-pill">24,6%</span></td>
+                  <td class="numeric">38 460</td>
+                  <td class="numeric pl-positive">+14,5%</td>
+                </tr>
+                <tr>
+                  <td><span class="ticker">NHY</span></td>
+                  <td>Norsk Hydro ASA</td>
+                  <td class="numeric"><span class="weight-pill">21,0%</span></td>
+                  <td class="numeric">32 860</td>
+                  <td class="numeric pl-positive">+9,7%</td>
+                </tr>
+                <tr>
+                  <td><span class="ticker">ORK</span></td>
+                  <td>Orkla ASA</td>
+                  <td class="numeric"><span class="weight-pill">19,3%</span></td>
+                  <td class="numeric">30 150</td>
+                  <td class="numeric pl-positive">+6,8%</td>
+                </tr>
+                <tr>
+                  <td><span class="ticker">DNB</span></td>
+                  <td>DNB Bank ASA</td>
+                  <td class="numeric"><span class="weight-pill">18,9%</span></td>
+                  <td class="numeric">29 580</td>
+                  <td class="numeric pl-positive">+10,6%</td>
+                </tr>
+                <tr>
+                  <td><span class="ticker">YAR</span></td>
+                  <td>Yara International ASA</td>
+                  <td class="numeric"><span class="weight-pill">16,2%</span></td>
+                  <td class="numeric">25 350</td>
+                  <td class="numeric pl-positive">+8,3%</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-        </section>
+        </div>
+      </section>
+    </main>
 
-        <section id="about" class="section">
-          <div class="card">
-            <h2>About AbaInvest</h2>
-            <p>
-              AbaInvest is a personal investment portfolio with a focus on long-term ownership in
-              quality companies listed on the Oslo Stock Exchange and selected international
-              markets. This dashboard is built to give a clear, calm overview of the portfolio
-              without the noise of intraday trading.
-            </p>
-            <p>
-              All figures and returns shown here are for personal tracking purposes only and do
-              not constitute investment advice.
-            </p>
-          </div>
-        </section>
-      </main>
-
-      <footer class="footer">
-        <span>© <span id="year"></span> AbaInvest. All rights reserved.</span>
-        <span class="footer-note">Private portfolio overview.</span>
-      </footer>
-    </div>
+    <footer id="kontakt" class="footer" role="contentinfo">
+      <div class="container footer-inner">
+        <div class="footer-col">
+          <div class="footer-brand">AbaInvest</div>
+          <div class="muted">Trondheim, Norge</div>
+        </div>
+        <div class="footer-col">
+          <div class="footer-title">Kontakt</div>
+          <a class="footer-link" href="mailto:kontakt@abainvest.no">kontakt@abainvest.no</a>
+        </div>
+        <div class="footer-col footer-right">
+          <div class="muted">© <span id="year"></span> AbaInvest</div>
+        </div>
+      </div>
+    </footer>
 
     <script src="script.js"></script>
   </body>
 </html>
-
